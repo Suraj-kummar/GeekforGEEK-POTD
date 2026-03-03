@@ -1,0 +1,29 @@
+class Solution {
+    public int totalElements(int[] arr) {
+        // Map to store the frequency of elements in the current window
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int left = 0;
+        int maxLen = 0;
+
+        for (int right = 0; right < arr.length; right++) {
+            // Expand window
+            map.put(arr[right], map.getOrDefault(arr[right], 0) + 1);
+
+            // Shrink window if distinct elements > 2
+            while (map.size() > 2) {
+                int leftElement = arr[left];
+                map.put(leftElement, map.get(leftElement) - 1);
+                
+                if (map.get(leftElement) == 0) {
+                    map.remove(leftElement);
+                }
+                left++;
+            }
+
+            // Update max length
+            maxLen = Math.max(maxLen, right - left + 1);
+        }
+
+        return maxLen;
+    }
+}
